@@ -20,37 +20,45 @@ if($token != API_KEY){
     while($rows = mysqli_fetch_array($result, MYSQLI_ASSOC)){
       $data["rows"][] = array(
         'id' => $rows['first_name'],
-        'user' => $rows['last_name'],
-        'tcin' => $rows['email_id'],
-        'tcin' => $rows['contact_no'],
-        'tcin' => $rows['created_date']
+        'last_name' => $rows['last_name'],
+        'email_id' => $rows['email_id'],
+        'contact_no' => $rows['contact_no'],
+        'created_date' => $rows['created_date']
       );
     }
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     break;
-    case insertdata:
-
-    $name       = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $emailid    = filter_input(INPUT_POST, 'emailid', FILTER_SANITIZE_STRING);
-    $contact_no = filter_input(INPUT_POST, 'contact_no', FILTER_SANITIZE_STRING);
-    $fullName   = explode($name, " ");
-
-    $query      = "INSERT INTO sandcastle_feedback (first_name, last_name,email_id,contact_no)
-                  VALUES ('".$fullName[0]."','".$fullName[1]."','".$emailid."','".$contact_no."')";
-
-    $result     = mysqli_query($link,$query);
-    if($result){
-      $data = array(
-        "status" => array(
-          'success' => '1'
-        )
-      );
-    } else {
+    case insertdata:    
+    $data = json_decode(file_get_contents('php://input'), true);
+    $name       = mysqli_real_escape_string($link, $data['name']);
+    $emailid    = mysqli_real_escape_string($link, $data['emailid']);
+    $contact_no = mysqli_real_escape_string($link, $data['contact_no']);
+    $fullName   = explode(" ", $name);
+    
+    if(empty($emailid)){
       $data = array(
         "status" => array(
           'failed' => '0'
         )
       );
+    } else {
+    $query      = "INSERT INTO sandcastle_feedback (first_name, last_name,email_id,contact_no)
+                  VALUES ('".$fullName[0]."','".$fullName[1]."','".$emailid."','".$contact_no."')";
+
+    $result     = mysqli_query($link,$query);
+      if($result){
+        $data = array(
+          "status" => array(
+            'success' => '1'
+          )
+        );
+      } else {
+        $data = array(
+          "status" => array(
+            'failed' => '0'
+          )
+        );
+      }
     }
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     break;

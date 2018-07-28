@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `feedback`
 --
 
-CREATE TABLE `feedback` (
+CREATE TABLE `sandcastle_feedback` (
   `id` int(11) NOT NULL,
   `first_name` varchar(127) NOT NULL,
   `last_name` varchar(127) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `feedback` (
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`id`, `first_name`, `last_name`, `email_id`, `contact_no`, `created_date`, `published`) VALUES
+INSERT INTO `sandcastle_feedback` (`id`, `first_name`, `last_name`, `email_id`, `contact_no`, `created_date`, `published`) VALUES
 (1, 'Senthil', 'Vijayragavan', 'senthil.v@target.com', '988888777', '2018-07-25 08:38:12', 1),
 (2, 'Vibhor', 'G', 'vibhor.gupta@target.com', '', '2018-07-25 08:38:12', 1);
 
